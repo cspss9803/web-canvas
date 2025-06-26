@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh_TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>畫布</title>
+    <style>
+        * { margin: 0; }
+    </style>
+</head>
+<body>
+    <web-canvas></web-canvas>
+    <div style="position: absolute; top: 15px; left: 15px; font-family: '微軟正黑體'; user-select: none;">
+        <div>視窗: <span id="windowsSize">0 / 0</span></div>
+        <div>偏移: <span id="offset">x: 0px, y: 0px</span></div>
+        <div>滑鼠: <span id="mousePosition">x: 0, y: 0</span></div>
+        <div>按下: <span id="pointerDownPosition">(尚未按下)</span></div>
+        <div>縮放: <span id="zoom">100%</span></div>
+    </div>
+</body>
+<script src="./dist/web-canvas.js" type="module"></script>
+</html>
