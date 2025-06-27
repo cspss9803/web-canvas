@@ -1,5 +1,5 @@
-import { CanvasCore } from '../CanvasCore.js';
-import type { Vector2 } from '../types.js';
+import type { CanvasCore } from '../CanvasCore';
+import type { Vector2 } from '../types';
 import { screenToWorld } from '../Utils.js';
 
 export class InputManager {

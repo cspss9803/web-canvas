@@ -1,10 +1,4 @@
-type EventType = 
-    'mouseDown' |
-    'mouseMove' |
-    'mouseUp' |
-    'wheel' |
-    'keyDown' |
-    'keyUp';
+type EventType = 'mouseDown' | 'mouseMove' | 'mouseUp' | 'wheel' | 'keyDown' | 'keyUp';
 
 export class EventManager {
 

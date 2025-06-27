@@ -1,4 +1,4 @@
-import type { CanvasCore } from '../CanvasCore.js';
+import type { CanvasCore } from '../CanvasCore';
 import { drawGrid } from './DrawGrid.js';
 import { clearCanvas } from './Clear.js';
 import { drawSelectionArea } from './DrawSelectionArea.js'

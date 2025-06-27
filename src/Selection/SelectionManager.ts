@@ -1,5 +1,7 @@
-import type { CanvasCore } from '../CanvasCore.js';
-import { InteractionMode, Vector2, type MouseEventProps } from '../types.js';
+import type { CanvasCore } from '../CanvasCore';
+import type { MouseEventProps, Vector2 } from '../types';
+import { InteractionMode } from '../types.js';
+
 
 export class SelectionManager {
     

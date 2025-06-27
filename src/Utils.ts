@@ -1,5 +1,5 @@
-import type { Vector2 } from './types.js';
-import type { ViewportManager } from './Viewport/ViewportManager.js';
+import type { Vector2 } from './types';
+import type { ViewportManager } from './Viewport/ViewportManager';
 
 export function screenToWorld( Viewport: ViewportManager, screenPos: Vector2): Vector2 {
     return {

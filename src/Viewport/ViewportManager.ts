@@ -1,5 +1,5 @@
-import type { CanvasCore } from '../CanvasCore.js';
-import type { Vector2, MouseEventProps } from '../types.js';
+import type { CanvasCore } from '../CanvasCore';
+import type { Vector2, MouseEventProps } from '../types';
 import { InteractionMode, MouseButton } from '../types.js';
 import { updateCursor } from '../Cursor/updateCursor.js';
 import { zoomToPoint } from './Zoom.js';

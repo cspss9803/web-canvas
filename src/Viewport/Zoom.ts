@@ -1,5 +1,5 @@
-import { Vector2 } from '../types.js';
-import type { ViewportManager } from './ViewportManager.js';
+import type { Vector2 } from '../types';
+import type { ViewportManager } from './ViewportManager';
 import { screenToWorld } from '../Utils.js';
 
 export function zoomToPoint( viewport: ViewportManager, pointOnScreen: Vector2, isWheelUp: boolean) {
