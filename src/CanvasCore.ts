@@ -5,7 +5,6 @@ import { InputManager } from './Event/InputManager.js';
 import { EventManager } from './Event/EventManager.js';
 import { InteractionModeManager } from './interationMode/InteractionModeManager.js';
 
-import { InteractionMode } from './types.js';
 import { updateCursor } from './interationMode/updateCursor.js';
 import { updateWindowsSize, updateInterationMode } from './Debug/Debug.js'; // debug
 
