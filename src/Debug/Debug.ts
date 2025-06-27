@@ -1,4 +1,5 @@
 import type { Vector2 } from '../types';
+import { InteractionMode } from '../types.js';
 
 export function updateOffset( offset: Vector2 ) {
     const element = document.getElementById( 'offset' ) as HTMLSpanElement;
@@ -28,4 +29,12 @@ export function updateZoom( zoom: number ) {
 export function updateWindowsSize( width: number, height: number ) {
     const element = document.getElementById('windowsSize') as HTMLSpanElement;
     element.innerHTML = `${ width }px / ${ height }px`;
+}
+
+export function updateInterationMode( interationMode: InteractionMode ) {
+    const element = document.getElementById('interationMode') as HTMLSpanElement;
+    let modeName = ''
+    if( interationMode === InteractionMode.Moving ) { modeName = "移動模式" }
+    if( interationMode === InteractionMode.Selecting ) { modeName = "選取模式" }
+    element.innerHTML = modeName;
 }

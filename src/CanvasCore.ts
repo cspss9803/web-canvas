@@ -5,7 +5,7 @@ import { InputManager } from './Event/InputManager.js';
 import { EventManager } from './Event/EventManager.js';
 import { InteractionMode } from './types.js';
 import { updateCursor } from './Cursor/updateCursor.js';
-import { updateWindowsSize } from './Debug/Debug.js'; // debug
+import { updateWindowsSize, updateInterationMode } from './Debug/Debug.js'; // debug
 
 export class CanvasCore {
 
@@ -29,6 +29,7 @@ export class CanvasCore {
         this.resize();
         this.renderer.startListening();
         updateCursor( this, false );
+        updateInterationMode( this.interactionMode ); // debug
     }
 
     resize(){

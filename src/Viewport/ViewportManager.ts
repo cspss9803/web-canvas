@@ -23,7 +23,8 @@ import {
     updateOffset, 
     updateMousePosition, 
     updatePointerDownPosition, 
-    updateZoom 
+    updateZoom, 
+    updateInterationMode
 } from '../Debug/Debug.js';
 /* -------------------------------------------------- */
 
@@ -59,6 +60,7 @@ export class ViewportManager {
             }
             updateCursor( this.core, true );
         }
+        updateInterationMode( this.core.interactionMode ); // debug
         updatePointerDownPosition( mouseScreenPos ); // debug
     }
 
@@ -78,6 +80,7 @@ export class ViewportManager {
             this.core.prevInteractionMode = null;
             updateCursor( this.core, false );
         }
+        updateInterationMode( this.core.interactionMode ); // debug
         updatePointerDownPosition( null ); // debug
     }
 
