@@ -1,7 +1,8 @@
 import type { CanvasCore } from '../CanvasCore';
 import { drawGrid } from './DrawGrid.js';
 import { clearCanvas } from './Clear.js';
-import { drawSelectionArea } from './DrawSelectionArea.js'
+import { drawSelectionArea } from './DrawSelectionArea.js';
+import { updateWindowsSize } from '../Debug/Debug.js'; /* debug */
 
 export class RenderManager {
 
@@ -10,10 +11,12 @@ export class RenderManager {
     canvas: HTMLCanvasElement;
     context: CanvasRenderingContext2D;
     
-    constructor( core: CanvasCore ) {
+    constructor( core: CanvasCore, canvas: HTMLCanvasElement ) {
         this.core = core;
-        this.canvas = core.canvas;
+        this.canvas = canvas;
         this.context = this.canvas.getContext('2d') as CanvasRenderingContext2D;
+        window.addEventListener('resize', () => this.resizeCanvas());
+        this.resizeCanvas();
     }
 
     startListening() {
@@ -37,5 +40,12 @@ export class RenderManager {
 
             this.isRenderedThisFrame = false;
         });
+    }
+
+    resizeCanvas() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        this.render();
+        updateWindowsSize( this.canvas.width, this.canvas.height ); /* debug */
     }
 }

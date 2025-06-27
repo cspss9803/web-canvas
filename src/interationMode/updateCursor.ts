@@ -3,7 +3,7 @@ import { InteractionMode } from '../types.js';
 
 export function updateCursor( core: CanvasCore, isMouseDown: boolean ) {
     const interactionMode = core.interaction.mode;
-    const canvas = core.canvas;
+    const canvas = core.renderer.canvas;
 
     switch ( interactionMode ) {
         case InteractionMode.Selecting:

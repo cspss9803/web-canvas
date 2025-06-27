@@ -50,5 +50,5 @@ export class InteractionModeManager {
 
     }
 
-    init() { updateCursor( this.core, false ); }
+    initCursor() { updateCursor( this.core, false ); }
 }
