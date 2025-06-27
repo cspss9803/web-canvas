@@ -1,7 +1,7 @@
 import type { CanvasCore } from '../CanvasCore';
 import type { Vector2, MouseEventProps } from '../types';
 import { InteractionMode, MouseButton } from '../types.js';
-import { updateCursor } from '../Cursor/updateCursor.js';
+import { updateCursor } from '../interationMode/updateCursor.js';
 import { zoomToPoint } from './Zoom.js';
 import { screenToWorld } from '../Utils.js';
 
@@ -42,19 +42,19 @@ export class ViewportManager {
     startMoving = ({ mouseScreenPos, mouseButton }: MouseEventProps) => {
         if( !mouseScreenPos ) return;
         if( 
-            this.core.interactionMode === InteractionMode.Moving && 
+            this.core.interaction.mode === InteractionMode.Moving && 
             mouseButton === MouseButton.Left || 
             mouseButton === MouseButton.Middle
         ) {
             this.cursorPos = mouseScreenPos;
             this.canMove = true;
             if( mouseButton === MouseButton.Middle ) {
-                this.core.prevInteractionMode = this.core.interactionMode;
-                this.core.interactionMode = InteractionMode.Moving;
+                this.core.interaction.prevMode = this.core.interaction.mode;
+                this.core.interaction.mode = InteractionMode.Moving;
             }
             updateCursor( this.core, true );
         }
-        updateInterationMode( this.core.interactionMode ); // debug
+        updateInterationMode( this.core.interaction.mode ); // debug
         updatePointerDownPosition( mouseScreenPos ); // debug
     }
 
@@ -69,12 +69,12 @@ export class ViewportManager {
 
     stopMoving = () => {
         this.canMove = false;
-        if ( this.core.prevInteractionMode !== null ) {
-            this.core.interactionMode = this.core.prevInteractionMode;
-            this.core.prevInteractionMode = null;
+        if ( this.core.interaction.prevMode !== null ) {
+            this.core.interaction.mode = this.core.interaction.prevMode;
+            this.core.interaction.prevMode = null;
             updateCursor( this.core, false );
         }
-        updateInterationMode( this.core.interactionMode ); // debug
+        updateInterationMode( this.core.interaction.mode ); // debug
         updatePointerDownPosition( null ); // debug
     }
 

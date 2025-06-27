@@ -3,8 +3,10 @@ import { ViewportManager } from './Viewport/ViewportManager.js';
 import { SelectionManager } from './Selection/SelectionManager.js';
 import { InputManager } from './Event/InputManager.js';
 import { EventManager } from './Event/EventManager.js';
+import { InteractionModeManager } from './interationMode/InteractionModeManager.js';
+
 import { InteractionMode } from './types.js';
-import { updateCursor } from './Cursor/updateCursor.js';
+import { updateCursor } from './interationMode/updateCursor.js';
 import { updateWindowsSize, updateInterationMode } from './Debug/Debug.js'; // debug
 
 export class CanvasCore {
@@ -15,8 +17,7 @@ export class CanvasCore {
     selection: SelectionManager;
     input: InputManager;
     events: EventManager = new EventManager();
-    interactionMode: InteractionMode = InteractionMode.Selecting;
-    prevInteractionMode: InteractionMode | null = null;
+    interaction: InteractionModeManager
 
     constructor( canvas: HTMLCanvasElement ) {
         this.canvas = canvas;
@@ -25,11 +26,12 @@ export class CanvasCore {
         this.renderer = new RenderManager( this );
         this.selection = new SelectionManager( this );
         this.input = new InputManager( this );
+        this.interaction = new InteractionModeManager( this );
         window.addEventListener('resize', () => this.resize());
         this.resize();
         this.renderer.startListening();
         updateCursor( this, false );
-        updateInterationMode( this.interactionMode ); // debug
+        updateInterationMode( this.interaction.mode ); // debug
     }
 
     resize(){

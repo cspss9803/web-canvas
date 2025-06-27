@@ -18,17 +18,16 @@ export class SelectionManager {
     }
 
     startSelect = ({ mouseWorldPos }: MouseEventProps) => {
-        if( this.core.interactionMode !== InteractionMode.Selecting || !mouseWorldPos ) return;
+        if( this.core.interaction.mode !== InteractionMode.Selecting || !mouseWorldPos ) return;
         this.start = mouseWorldPos;
     }
     selecting = ({ mouseWorldPos }: MouseEventProps) => {
-        if( this.core.interactionMode !== InteractionMode.Selecting || !mouseWorldPos ) return;
+        if( this.core.interaction.mode !== InteractionMode.Selecting || !mouseWorldPos ) return;
         this.end = mouseWorldPos;
     }
     stopSelect = ({}: MouseEventProps) => {
-        if( this.core.interactionMode !== InteractionMode.Selecting ) return;
-        this.start = null;
-        this.end = null;
+        if(  this.start ) this.start = null;
+        if(  this.end ) this.end = null;
     }
     
 }
