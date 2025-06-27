@@ -6,10 +6,10 @@ export function updateCursor( core: CanvasCore, isMouseDown: boolean ) {
     const canvas = core.renderer.canvas;
 
     switch ( interactionMode ) {
-        case InteractionMode.Selecting:
+        case InteractionMode.Select:
             canvas.style.cursor = 'url(./src/Cursor/select.svg) 0 0, auto';
             break;
-        case InteractionMode.Moving:
+        case InteractionMode.Pan:
             const cusrorName = isMouseDown ? 'grabbing.svg' : 'hand.svg';
             canvas.style.cursor = `url(./src/Cursor/${cusrorName}) 0 0, auto`;
             break;

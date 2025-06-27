@@ -6,7 +6,7 @@ export class InputManager {
 
     core: CanvasCore;
 
-    constructor(core: CanvasCore) {
+    constructor( core: CanvasCore ) {
         this.core = core;
         window.addEventListener('mousedown', this.onMouseDown);
         window.addEventListener('mousemove', this.onMouseMove);
@@ -15,7 +15,7 @@ export class InputManager {
         window.addEventListener('wheel', this.onWheel, { passive: false });
     }
 
-    onMouseDown = (e: MouseEvent) => {
+    onMouseDown = ( e: MouseEvent ) => {
         const mouseWorldPos = this.getWorldPosByEvent(e);
         const mouseScreenPos = { x: e.clientX, y: e.clientY };
         const mouseButton = e.button;

@@ -20,7 +20,7 @@ export class SelectionManager {
 
     startSelect = ({ mouseWorldPos, mouseButton }: MouseEventProps) => {
         if( 
-            this.core.interaction.mode !== InteractionMode.Selecting || 
+            this.core.interaction.mode !== InteractionMode.Select || 
             !mouseWorldPos || 
             mouseButton !== MouseButton.Left
         ) return;

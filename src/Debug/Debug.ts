@@ -34,7 +34,7 @@ export function updateWindowsSize( width: number, height: number ) {
 export function updateInterationMode( interationMode: InteractionMode ) {
     const element = document.getElementById('interationMode') as HTMLSpanElement;
     let modeName = ''
-    if( interationMode === InteractionMode.Moving ) { modeName = "移動模式" }
-    if( interationMode === InteractionMode.Selecting ) { modeName = "選取模式" }
+    if( interationMode === InteractionMode.Pan ) { modeName = "移動模式" }
+    if( interationMode === InteractionMode.Select ) { modeName = "選取模式" }
     element.innerHTML = modeName;
 }

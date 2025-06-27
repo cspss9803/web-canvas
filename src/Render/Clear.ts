@@ -1,5 +1,5 @@
 export function clearCanvas(canvas: HTMLCanvasElement) {
-    const ctx = canvas.getContext('2d');
-    if (!ctx) { throw new Error('context 取得失敗'); }
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const context = canvas.getContext('2d');
+    if (!context) { throw new Error('context 取得失敗'); }
+    context.clearRect(0, 0, canvas.width, canvas.height);
 }

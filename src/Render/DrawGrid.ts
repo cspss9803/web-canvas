@@ -42,7 +42,7 @@ export function drawGrid(
     } 
 ) {
     
-    const ctx = canvas.getContext('2d');
+    const context = canvas.getContext('2d');
 
     const { 
         thinLineColor, 
@@ -72,19 +72,19 @@ export function drawGrid(
             const isThickLine = gridIndex % thickLineInterval === 0;
             gridIndex++;
 
-            if ( !ctx ) { throw new Error('canvas context 取得失敗'); }
-            ctx.strokeStyle = isThickLine ? thickLineColor : thinLineColor;
-            ctx.lineWidth = isThickLine ? thickLineWidth : thinLineWidth;
-            ctx.beginPath();
+            if ( !context ) { throw new Error('canvas context 取得失敗'); }
+            context.strokeStyle = isThickLine ? thickLineColor : thinLineColor;
+            context.lineWidth = isThickLine ? thickLineWidth : thinLineWidth;
+            context.beginPath();
 
             if ( isVertical ) {
-                ctx.moveTo( pos, 0 );
-                ctx.lineTo( pos, canvas.height );
+                context.moveTo( pos, 0 );
+                context.lineTo( pos, canvas.height );
             } else {
-                ctx.moveTo( 0, pos );
-                ctx.lineTo( canvas.width, pos );
+                context.moveTo( 0, pos );
+                context.lineTo( canvas.width, pos );
             }
-            ctx.stroke();
+            context.stroke();
         }
     }
 

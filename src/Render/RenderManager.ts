@@ -36,7 +36,7 @@ export class RenderManager {
 
             clearCanvas( canvas );
             drawGrid( canvas, offset, zoom );
-            drawSelectionArea( context, isSelecting, start, end, offset, zoom );
+            if( isSelecting ) { drawSelectionArea( context, start, end, offset, zoom ); }
 
             this.isRenderedThisFrame = false;
         });

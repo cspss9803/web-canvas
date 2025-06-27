@@ -2,13 +2,12 @@ import type { Vector2 } from "../types"
 
 export function drawSelectionArea( 
     context: CanvasRenderingContext2D,
-    isSelecting: boolean,
     start: Vector2 | null, 
     end: Vector2 | null,
     offset: Vector2,
     zoom: number
 ) {
-    if( !start || !end || !isSelecting ) return;
+    if( !start || !end ) return;
     context.save();
     context.translate( offset.x, offset.y );
     context.scale( zoom, zoom );
