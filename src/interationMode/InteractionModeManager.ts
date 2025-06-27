@@ -11,7 +11,7 @@ export class InteractionModeManager {
     prevMode: InteractionMode | null = null;
 
     constructor( core: CanvasCore ) {
-        
+
         this.core = core;
 
         core.events.on('keydown', ({ code }: { code: string }) => {
@@ -44,14 +44,18 @@ export class InteractionModeManager {
             if ( this.mode === InteractionMode.Moving ) { updateCursor( this.core, false ); }
            this.exitTemporaryMoveMode();
         });
+
+        updateCursor( this.core, false );
         
     }
 
+    // 按滑鼠中鍵時，暫時切換成 "移動模式"
     switchToTemporaryMoveMode() {
         this.prevMode = this.mode;
         this.mode = InteractionMode.Moving;
     }
 
+    // 放開滑鼠中鍵時，恢復到原有的 "互動模式"
     exitTemporaryMoveMode() {
         if ( this.prevMode !== null ) {
             this.mode = this.prevMode;
