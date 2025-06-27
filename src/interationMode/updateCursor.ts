@@ -2,7 +2,6 @@ import type { CanvasCore } from '../CanvasCore';
 import { InteractionMode } from '../types.js';
 
 export function updateCursor( core: CanvasCore, isMouseDown: boolean ) {
-    if( !core.interaction ) return;
     const interactionMode = core.interaction.mode;
     const canvas = core.canvas;
 

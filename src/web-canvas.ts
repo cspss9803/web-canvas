@@ -10,6 +10,7 @@ class WebCanvas extends HTMLElement {
     connectedCallback() {
         document.addEventListener("contextmenu", e => e.preventDefault());
         const canvas = document.createElement('canvas');
+        canvas.style.display = 'block';
         this.shadowRoot?.appendChild( canvas );
         new CanvasCore( canvas );
     }
