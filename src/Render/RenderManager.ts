@@ -1,6 +1,7 @@
 import type { CanvasCore } from '../CanvasCore.js';
 import { drawGrid } from './DrawGrid.js';
 import { clearCanvas } from './Clear.js';
+import { drawSelectionArea } from './DrawSelectionArea.js'
 
 export class RenderManager {
 
@@ -26,10 +27,14 @@ export class RenderManager {
         if ( this.isRenderedThisFrame ) return;
         this.isRenderedThisFrame = true;
         requestAnimationFrame(() => {
-            const viewport = this.core.viewport;
-            clearCanvas( this.canvas );
-            drawGrid( this.canvas, viewport.offset, viewport.zoom );
-            
+            const { canvas, context } = this;
+            const { offset, zoom } = this.core.viewport;
+            const { start, end } = this.core.selection
+
+            clearCanvas( canvas );
+            drawGrid( canvas, offset, zoom );
+            drawSelectionArea( context, start, end, offset, zoom );
+
             this.isRenderedThisFrame = false;
         });
     }

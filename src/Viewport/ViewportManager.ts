@@ -1,17 +1,11 @@
 import type { CanvasCore } from '../CanvasCore.js';
-import type { Vector2 } from '../types.js';
+import type { Vector2, MouseEventProps } from '../types.js';
 import { InteractionMode, MouseButton } from '../types.js';
 import { updateCursor } from '../Cursor/updateCursor.js';
 import { zoomToPoint } from './Zoom.js';
 import { screenToWorld } from '../Utils.js';
 
-type mouseEventProps = {
-    mouseScreenPos?: Vector2,
-    mouseWorldPos?: Vector2,
-    mouseButton?: MouseButton
-};
-
-type wheelEventProps = {
+type WheelEventProps = {
     useCtrl: boolean;
     useShift: boolean;
     mouseScreenPos: Vector2;
@@ -39,13 +33,13 @@ export class ViewportManager {
 
     constructor( core: CanvasCore ) {
         this.core = core;
-        core.events.on('mouseDown', (e: mouseEventProps) => { this.startMoving(e) });
-        core.events.on('mouseMove', (e: mouseEventProps) => { this.handleMove(e) });
-        core.events.on('mouseUp', (e: mouseEventProps) => { this.stopMoving() });
-        core.events.on('wheel', (e: wheelEventProps) => this.handleWheel(e));
+        core.events.on('mouseDown', (e: MouseEventProps) => { this.startMoving(e) });
+        core.events.on('mouseMove', (e: MouseEventProps) => { this.handleMove(e) });
+        core.events.on('mouseUp', (e: MouseEventProps) => { this.stopMoving() });
+        core.events.on('wheel', (e: WheelEventProps) => this.handleWheel(e));
     }
 
-    startMoving = ({ mouseScreenPos, mouseButton }: mouseEventProps) => {
+    startMoving = ({ mouseScreenPos, mouseButton }: MouseEventProps) => {
         if( !mouseScreenPos ) return;
         if( 
             this.core.interactionMode === InteractionMode.Moving && 
@@ -64,7 +58,7 @@ export class ViewportManager {
         updatePointerDownPosition( mouseScreenPos ); // debug
     }
 
-    handleMove = ({ mouseScreenPos }: mouseEventProps) => {
+    handleMove = ({ mouseScreenPos }: MouseEventProps) => {
         updateMousePosition(screenToWorld( this, mouseScreenPos || { x: 0, y: 0 } )); // debug
         if ( !this.canMove || !mouseScreenPos ) return;
         this.offset.x += mouseScreenPos.x - this.cursorPos.x;
@@ -84,7 +78,7 @@ export class ViewportManager {
         updatePointerDownPosition( null ); // debug
     }
 
-    handleWheel = ({useCtrl, useShift, mouseScreenPos, isWheelUp}: wheelEventProps) => {
+    handleWheel = ({useCtrl, useShift, mouseScreenPos, isWheelUp}: WheelEventProps) => {
         if (useCtrl) {
             zoomToPoint(this, mouseScreenPos, isWheelUp);
             updateZoom(this.zoom);

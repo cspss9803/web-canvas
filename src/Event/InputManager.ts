@@ -19,19 +19,41 @@ export class InputManager {
         const mouseWorldPos = this.getWorldPosByEvent(e);
         const mouseScreenPos = { x: e.clientX, y: e.clientY };
         const mouseButton = e.button;
-        this.core.events.emit('mouseDown', { mouseWorldPos, mouseScreenPos, mouseButton });
+        const useCtrl = e.ctrlKey;
+        const shiftKey = e.shiftKey;
+        this.core.events.emit('mouseDown', {
+            mouseWorldPos, 
+            mouseScreenPos, 
+            mouseButton, 
+            useCtrl,
+            shiftKey
+        });
     }
 
     onMouseMove = (e: MouseEvent) => {
         const mouseWorldPos = this.getWorldPosByEvent(e);
         const mouseScreenPos = { x: e.clientX, y: e.clientY };
-        this.core.events.emit('mouseMove', { mouseWorldPos, mouseScreenPos });
+        const useCtrl = e.ctrlKey;
+        const shiftKey = e.shiftKey;
+        this.core.events.emit('mouseMove', { 
+            mouseWorldPos, 
+            mouseScreenPos, 
+            useCtrl,
+            shiftKey
+        });
     }
 
     onMouseUp = (e: MouseEvent) => {
         const mouseWorldPos = this.getWorldPosByEvent(e);
         const mouseScreenPos = { x: e.clientX, y: e.clientY };
-        this.core.events.emit('mouseUp', { mouseWorldPos, mouseScreenPos });
+        const useCtrl = e.ctrlKey;
+        const shiftKey = e.shiftKey;
+        this.core.events.emit('mouseUp', { 
+            mouseWorldPos, 
+            mouseScreenPos, 
+            useCtrl,
+            shiftKey
+        });
     }
 
     onWheel = (e: WheelEvent) => {
@@ -40,7 +62,12 @@ export class InputManager {
         const useShift = e.shiftKey;
         const isWheelUp = e.deltaY < 0;
         const mouseScreenPos = { x: e.clientX, y: e.clientY };
-        this.core.events.emit('wheel', { useCtrl, useShift, mouseScreenPos, isWheelUp });
+        this.core.events.emit('wheel', { 
+            useCtrl, 
+            useShift, 
+            mouseScreenPos, 
+            isWheelUp 
+        });
     }
 
     onKeyDown = (e: KeyboardEvent) => {
