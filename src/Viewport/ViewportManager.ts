@@ -43,8 +43,7 @@ export class ViewportManager {
         if( !mouseScreenPos ) return;
         if( 
             this.core.interaction.mode === InteractionMode.Moving && 
-            mouseButton === MouseButton.Left || 
-            mouseButton === MouseButton.Middle
+            ( mouseButton === MouseButton.Left || mouseButton === MouseButton.Middle )
         ) {
             this.cursorPos = mouseScreenPos;
             this.canMove = true;
@@ -72,6 +71,9 @@ export class ViewportManager {
         if ( this.core.interaction.prevMode !== null ) {
             this.core.interaction.mode = this.core.interaction.prevMode;
             this.core.interaction.prevMode = null;
+            updateCursor( this.core, false );
+        }
+        if ( this.core.interaction.mode === InteractionMode.Moving ) {
             updateCursor( this.core, false );
         }
         updateInterationMode( this.core.interaction.mode ); // debug

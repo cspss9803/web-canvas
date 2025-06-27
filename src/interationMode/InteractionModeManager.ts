@@ -14,11 +14,13 @@ export class InteractionModeManager {
         core.events.on('keydown', ({ code }: { code: string }) => {
             if( code === 'KeyH' ) {
                 this.mode = InteractionMode.Moving;
+                this.prevMode = null;
                 updateCursor( core, false );
                 updateInterationMode( this.mode ); // debug
             }
             if( code === 'KeyV' ) {
                 this.mode = InteractionMode.Selecting;
+                this.prevMode = null;
                 updateCursor( core, false );
                 updateInterationMode( this.mode ); // debug
             }
