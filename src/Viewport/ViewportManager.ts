@@ -40,21 +40,12 @@ export class ViewportManager {
     }
 
     startMoving = ({ mouseScreenPos, mouseButton }: MouseEventProps) => {
-        if( !mouseScreenPos ) return;
-        if( 
-            this.core.interaction.mode === InteractionMode.Moving && 
-            ( mouseButton === MouseButton.Left || mouseButton === MouseButton.Middle )
-        ) {
-            this.cursorPos = mouseScreenPos;
+        if( !mouseScreenPos || mouseButton === undefined ) return;
+        if( this.canViewportMove(mouseButton) ) {
             this.canMove = true;
-            if( mouseButton === MouseButton.Middle ) {
-                this.core.interaction.prevMode = this.core.interaction.mode;
-                this.core.interaction.mode = InteractionMode.Moving;
-            }
-            updateCursor( this.core, true );
+            this.cursorPos = mouseScreenPos;
+            updatePointerDownPosition( mouseScreenPos ); // debug
         }
-        updateInterationMode( this.core.interaction.mode ); // debug
-        updatePointerDownPosition( mouseScreenPos ); // debug
     }
 
     handleMove = ({ mouseScreenPos }: MouseEventProps) => {
@@ -68,20 +59,11 @@ export class ViewportManager {
 
     stopMoving = () => {
         this.canMove = false;
-        if ( this.core.interaction.prevMode !== null ) {
-            this.core.interaction.mode = this.core.interaction.prevMode;
-            this.core.interaction.prevMode = null;
-            updateCursor( this.core, false );
-        }
-        if ( this.core.interaction.mode === InteractionMode.Moving ) {
-            updateCursor( this.core, false );
-        }
-        updateInterationMode( this.core.interaction.mode ); // debug
         updatePointerDownPosition( null ); // debug
     }
 
     handleWheel = ({useCtrl, useShift, mouseScreenPos, isWheelUp}: WheelEventProps) => {
-        if (useCtrl) {
+        if ( useCtrl ) {
             zoomToPoint(this, mouseScreenPos, isWheelUp);
             updateZoom(this.zoom);
         } else if (useShift) {
@@ -91,6 +73,13 @@ export class ViewportManager {
             this.offset.y += isWheelUp ? -this.WHEEL_MOVE_DISTANCE : this.WHEEL_MOVE_DISTANCE; 
             updateOffset(this.offset); // debug
         }
+    }
+
+    canViewportMove( mouseButton: MouseButton ) {
+        return ( 
+            this.core.interaction.mode === InteractionMode.Moving && 
+            mouseButton === MouseButton.Left
+        ) || mouseButton === MouseButton.Middle;
     }
     
 }

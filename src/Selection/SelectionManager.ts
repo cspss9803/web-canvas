@@ -1,6 +1,6 @@
 import type { CanvasCore } from '../CanvasCore';
 import type { MouseEventProps, Vector2 } from '../types';
-import { InteractionMode } from '../types.js';
+import { InteractionMode, MouseButton } from '../types.js';
 
 
 export class SelectionManager {
@@ -17,17 +17,25 @@ export class SelectionManager {
         core.events.on('mouseUp', (e: MouseEventProps) => { this.stopSelect(e) });
     }
 
-    startSelect = ({ mouseWorldPos }: MouseEventProps) => {
-        if( this.core.interaction.mode !== InteractionMode.Selecting || !mouseWorldPos ) return;
+    startSelect = ({ mouseWorldPos, mouseButton }: MouseEventProps) => {
+        if( 
+            this.core.interaction.mode !== InteractionMode.Selecting || 
+            !mouseWorldPos || 
+            mouseButton !== MouseButton.Left
+        ) return;
         this.start = mouseWorldPos;
     }
     selecting = ({ mouseWorldPos }: MouseEventProps) => {
-        if( this.core.interaction.mode !== InteractionMode.Selecting || !mouseWorldPos ) return;
+        if( 
+            this.core.interaction.mode !== InteractionMode.Selecting || 
+            !mouseWorldPos ||
+            !this.start
+        ) return;
         this.end = mouseWorldPos;
     }
     stopSelect = ({}: MouseEventProps) => {
-        if(  this.start ) this.start = null;
-        if(  this.end ) this.end = null;
+        if( this.start ) this.start = null;
+        if( this.end ) this.end = null;
     }
     
 }
