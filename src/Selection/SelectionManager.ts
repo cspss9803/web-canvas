@@ -8,6 +8,7 @@ export class SelectionManager {
     core: CanvasCore;
     start: Vector2 | null = null
     end: Vector2 | null = null
+    isSelecting: boolean = false;
     
     constructor( core: CanvasCore ) {
         this.core = core;
@@ -24,18 +25,16 @@ export class SelectionManager {
             mouseButton !== MouseButton.Left
         ) return;
         this.start = mouseWorldPos;
+        this.isSelecting = true;
     }
     selecting = ({ mouseWorldPos }: MouseEventProps) => {
-        if( 
-            this.core.interaction.mode !== InteractionMode.Selecting || 
-            !mouseWorldPos ||
-            !this.start
-        ) return;
+        if( !mouseWorldPos || !this.isSelecting ) return;
         this.end = mouseWorldPos;
     }
     stopSelect = ({}: MouseEventProps) => {
         if( this.start ) this.start = null;
         if( this.end ) this.end = null;
+        this.isSelecting = false;
     }
     
 }

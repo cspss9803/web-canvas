@@ -29,11 +29,11 @@ export class RenderManager {
         requestAnimationFrame(() => {
             const { canvas, context } = this;
             const { offset, zoom } = this.core.viewport;
-            const { start, end } = this.core.selection
+            const { isSelecting, start, end } = this.core.selection
 
             clearCanvas( canvas );
             drawGrid( canvas, offset, zoom );
-            drawSelectionArea( context, start, end, offset, zoom );
+            drawSelectionArea( context, isSelecting, start, end, offset, zoom );
 
             this.isRenderedThisFrame = false;
         });
