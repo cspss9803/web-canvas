@@ -1,5 +1,4 @@
 import type { CanvasCore } from '../CanvasCore';
-import type { MouseEventProps } from '../types';
 import { InteractionMode, MouseButton } from '../types.js';
 import { updateCursor } from '../interationMode/updateCursor.js';
 import { switchToTemporaryMoveMode, exitTemporaryMoveMode } from './temporaryMoveMode.js';
@@ -16,14 +15,13 @@ export class InteractionModeManager {
         this.core = core;
         updateInterationMode( this.mode ); /* debug */
 
-        core.events.on('keydown', ({ code }: { code: string }) => {
-
-            if( code === 'KeyH' ) {
+        core.events.on('keydown', (e: KeyboardEvent) => {
+            if( e.code === 'KeyH' ) {
                 this.mode = InteractionMode.Pan;
                 this.prevMode = null;
                 if( !this.core.selection.isSelecting ) { updateCursor( core, false ); }
                 updateInterationMode( this.mode ); /* debug */
-            } else if( code === 'KeyV' ) {
+            } else if( e.code === 'KeyV' ) {
                 this.mode = InteractionMode.Select;
                 this.prevMode = null;
                 if( !this.core.viewport.isPanning ) { updateCursor( core, false ); }
@@ -31,12 +29,12 @@ export class InteractionModeManager {
             }
         });
 
-        core.events.on('mouseDown', ({ mouseButton }: MouseEventProps) => {
-            if ( mouseButton === MouseButton.Middle ) {
+        core.events.on('mouseDown', (e: MouseEvent) => {
+            if ( e.button === MouseButton.Middle ) {
                 switchToTemporaryMoveMode( this );
                 updateCursor( this.core, true );
                 updateInterationMode( this.mode ); /* debug */
-            } else if ( mouseButton === MouseButton.Left && this.mode === InteractionMode.Pan ) {
+            } else if ( e.button === MouseButton.Left && this.mode === InteractionMode.Pan ) {
                 updateCursor( this.core, true );
                 updateInterationMode( this.mode ); /* debug */
             }
@@ -44,7 +42,7 @@ export class InteractionModeManager {
 
         core.events.on('mouseUp', () => {
             if ( this.mode === InteractionMode.Pan ) { updateCursor( this.core, false ); }
-            exitTemporaryMoveMode( this )
+            exitTemporaryMoveMode( this );
             updateCursor( this.core, false );
         });
 

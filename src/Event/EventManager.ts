@@ -4,16 +4,16 @@ export class EventManager {
 
     private listeners: Record<string, Function[]> = {};
 
-    on(event: EventType, handler: Function) {
-        if (!this.listeners[event]) this.listeners[event] = [];
-        this.listeners[event].push(handler);
+    on( eventName: EventType, handler: Function ) {
+        if (!this.listeners[eventName]) this.listeners[eventName] = [];
+        this.listeners[eventName].push(handler);
     }
 
-    off(event: EventType, handler: Function) {
-        this.listeners[event] = (this.listeners[event] || []).filter(h => h !== handler);
+    off( eventName: EventType, handler: Function ) {
+        this.listeners[eventName] = (this.listeners[eventName] || []).filter(h => h !== handler);
     }
 
-    emit(event: EventType, ...args: any[]) {
-        (this.listeners[event] || []).forEach(handler => handler(...args));
+    emit(eventName: EventType, ...args: any[]) {
+        (this.listeners[eventName] || []).forEach(handler => handler(...args));
     }
 }

@@ -11,3 +11,8 @@ export type MouseEventProps = {
     useCtrl ?: boolean
     useShift ?: boolean
 };
+
+export interface CanvasMouseEvent extends MouseEvent {
+  screenPosition: Vector2;
+  worldPosition: Vector2
+}
