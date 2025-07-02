@@ -2,7 +2,6 @@ import type { CanvasCore } from '../CanvasCore';
 import { InteractionMode, MouseButton } from '../types.js';
 import { updateCursor } from '../interationMode/updateCursor.js';
 import { switchToTemporaryMoveMode, exitTemporaryMoveMode } from './temporaryMoveMode.js';
-import { updateInterationMode } from '../Debug/Debug.js'; /* debug */
 
 export class InteractionModeManager {
 
@@ -13,19 +12,16 @@ export class InteractionModeManager {
     constructor( core: CanvasCore ) {
 
         this.core = core;
-        updateInterationMode( this.mode ); /* debug */
 
         core.events.on('keyDown', (e) => {
             if( e.code === 'KeyH' ) {
                 this.mode = InteractionMode.Pan;
                 this.prevMode = null;
                 if( !this.core.selection.isSelecting ) { updateCursor( core, false ); }
-                updateInterationMode( this.mode ); /* debug */
             } else if( e.code === 'KeyV' ) {
                 this.mode = InteractionMode.Select;
                 this.prevMode = null;
                 if( !this.core.viewport.isPanning ) { updateCursor( core, false ); }
-                updateInterationMode( this.mode ); /* debug */
             }
         });
 
@@ -33,10 +29,8 @@ export class InteractionModeManager {
             if ( e.button === MouseButton.Middle ) {
                 switchToTemporaryMoveMode( this );
                 updateCursor( this.core, true );
-                updateInterationMode( this.mode ); /* debug */
             } else if ( e.button === MouseButton.Left && this.mode === InteractionMode.Pan ) {
                 updateCursor( this.core, true );
-                updateInterationMode( this.mode ); /* debug */
             }
         });
 

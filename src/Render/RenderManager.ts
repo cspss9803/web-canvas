@@ -2,7 +2,6 @@ import type { CanvasCore } from '../CanvasCore';
 import { drawGrid } from './DrawGrid.js';
 import { clearCanvas } from './Clear.js';
 import { drawSelectionArea } from './DrawSelectionArea.js';
-import { updateWindowsSize } from '../Debug/Debug.js'; /* debug */
 
 export class RenderManager {
 
@@ -46,6 +45,5 @@ export class RenderManager {
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
         this.render();
-        updateWindowsSize( this.canvas.width, this.canvas.height ); /* debug */
     }
 }

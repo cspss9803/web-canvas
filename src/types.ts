@@ -13,6 +13,6 @@ export type MouseEventProps = {
 };
 
 export interface CanvasMouseEvent extends MouseEvent {
-  screenPosition: Vector2;
-  worldPosition: Vector2
+    screenPosition: Vector2;
+    worldPosition: Vector2
 }

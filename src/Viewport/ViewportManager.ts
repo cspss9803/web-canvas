@@ -3,15 +3,6 @@ import type { Vector2, CanvasMouseEvent } from '../types';
 import { InteractionMode, MouseButton } from '../types.js';
 import { zoomToPoint } from './Zoom.js';
 
-/* debug -------------------------------------------- */
-import { 
-    updateOffset, 
-    updateMousePosition, 
-    updatePointerDownPosition, 
-    updateZoom, 
-} from '../Debug/Debug.js';
-/* -------------------------------------------------- */
-
 export class ViewportManager {
 
     core: CanvasCore;
@@ -32,33 +23,30 @@ export class ViewportManager {
         if( this.canPan( e.button ) ) {
             this.isPanning = true;
             this.cursorPos = e.screenPosition;
-            updatePointerDownPosition( e.screenPosition ); /* debug */
         }
     }
 
     handlePan = ( e: CanvasMouseEvent ) => {
-        updateMousePosition( e.worldPosition ); /* debug */
         if ( !this.isPanning ) return;
         this.offset.x += e.screenPosition.x - this.cursorPos.x;
         this.offset.y += e.screenPosition.y - this.cursorPos.y;
         this.cursorPos = e.screenPosition;
-        updateOffset( this.offset ); /* debug */
     }
 
-    stopPanning = () => { this.isPanning = false; updatePointerDownPosition( null ); /* debug */ }
+    stopPanning = () => { this.isPanning = false; }
 
     handleWheel = ( e: WheelEvent ) => {
         const isWheelUp = e.deltaY < 0;
         const mouseScreenPos = { x: e.clientX, y: e.clientY };
 
         // 縮放視角 => 滾動滑鼠 + 按著Ctrl
-        if ( e.ctrlKey ) { zoomToPoint( this, mouseScreenPos, isWheelUp ); updateZoom( this.zoom ); /* debug */ } 
+        if ( e.ctrlKey ) { zoomToPoint( this, mouseScreenPos, isWheelUp ); } 
         
         // 左右平移視角 => 滾動滑鼠 + 按著Shift
-        else if ( e.shiftKey ) { this.offset.x += isWheelUp ? -20 : 20; updateOffset( this.offset ); /* debug */ } 
+        else if ( e.shiftKey ) { this.offset.x += isWheelUp ? -20 : 20; } 
         
         // 上下平移視角 => 只滾動滑鼠
-        else { this.offset.y += isWheelUp ? -20 : 20; updateOffset( this.offset ); /* debug */ }
+        else { this.offset.y += isWheelUp ? -20 : 20; }
     }
 
     private canPan( mouseButton: MouseButton ) {
