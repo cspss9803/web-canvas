@@ -33,7 +33,7 @@ export class InputManager {
     }
 
     onKeyDown = (e: KeyboardEvent) => {
-        this.core.events.emit('keydown', e);
+        this.core.events.emit('keyDown', e);
     }
 
     getWorldPosByEvent(e: MouseEvent): Vector2 {

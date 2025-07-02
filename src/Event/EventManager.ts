@@ -1,19 +1,31 @@
-type EventType = 'mouseDown' | 'mouseMove' | 'mouseUp' | 'wheel' | 'keydown' | 'keyUp';
+import type { CanvasMouseEvent } from '../types';
+
+type EventMap = {
+    mouseDown: [CanvasMouseEvent];
+    mouseMove: [CanvasMouseEvent];
+    mouseUp: [CanvasMouseEvent];
+    wheel: [WheelEvent];
+    keyDown: [KeyboardEvent];
+    keyUp: [KeyboardEvent];
+};
 
 export class EventManager {
+    private listeners: {
+        [K in keyof EventMap]?: ((...args: EventMap[K]) => void)[];
+    } = {};
 
-    private listeners: Record<string, Function[]> = {};
-
-    on( eventName: EventType, handler: Function ) {
+    on<K extends keyof EventMap>(eventName: K, handler: (...args: EventMap[K]) => void) {
         if (!this.listeners[eventName]) this.listeners[eventName] = [];
-        this.listeners[eventName].push(handler);
+        this.listeners[eventName]!.push(handler);
     }
 
-    off( eventName: EventType, handler: Function ) {
-        this.listeners[eventName] = (this.listeners[eventName] || []).filter(h => h !== handler);
+    off<K extends keyof EventMap>(eventName: K, handler: (...args: EventMap[K]) => void) {
+        this.listeners[eventName] = (
+            (this.listeners[eventName] || []).filter(h => h !== handler)
+        ) as typeof this.listeners[K];
     }
 
-    emit(eventName: EventType, ...args: any[]) {
+    emit<K extends keyof EventMap>(eventName: K, ...args: EventMap[K]) {
         (this.listeners[eventName] || []).forEach(handler => handler(...args));
     }
 }

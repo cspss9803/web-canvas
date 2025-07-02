@@ -32,7 +32,7 @@ export class RenderManager {
         requestAnimationFrame(() => {
             const { canvas, context } = this;
             const { offset, zoom } = this.core.viewport;
-            const { isSelecting, start, end } = this.core.selection
+            const { isSelecting, start, end } = this.core.selection;
 
             clearCanvas( canvas );
             drawGrid( canvas, offset, zoom );

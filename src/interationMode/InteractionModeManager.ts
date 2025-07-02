@@ -15,7 +15,7 @@ export class InteractionModeManager {
         this.core = core;
         updateInterationMode( this.mode ); /* debug */
 
-        core.events.on('keydown', (e: KeyboardEvent) => {
+        core.events.on('keyDown', (e) => {
             if( e.code === 'KeyH' ) {
                 this.mode = InteractionMode.Pan;
                 this.prevMode = null;
@@ -29,7 +29,7 @@ export class InteractionModeManager {
             }
         });
 
-        core.events.on('mouseDown', (e: MouseEvent) => {
+        core.events.on('mouseDown', (e) => {
             if ( e.button === MouseButton.Middle ) {
                 switchToTemporaryMoveMode( this );
                 updateCursor( this.core, true );

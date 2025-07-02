@@ -22,10 +22,10 @@ export class ViewportManager {
 
     constructor( core: CanvasCore ) {
         this.core = core;
-        core.events.on('mouseDown', (e: CanvasMouseEvent) => { this.startPanning(e) });
-        core.events.on('mouseMove', (e: CanvasMouseEvent) => { this.handlePan(e) });
+        core.events.on('mouseDown', (e) => { this.startPanning(e) });
+        core.events.on('mouseMove', (e) => { this.handlePan(e) });
         core.events.on('mouseUp', () => { this.stopPanning() });
-        core.events.on('wheel', (e: WheelEvent) => this.handleWheel(e));
+        core.events.on('wheel', (e) => this.handleWheel(e));
     }
 
     startPanning = ( e: CanvasMouseEvent ) => {
@@ -50,16 +50,15 @@ export class ViewportManager {
     handleWheel = ( e: WheelEvent ) => {
         const isWheelUp = e.deltaY < 0;
         const mouseScreenPos = { x: e.clientX, y: e.clientY };
-        if ( e.ctrlKey ) {
-            zoomToPoint( this, mouseScreenPos, isWheelUp );
-            updateZoom( this.zoom );
-        } else if ( e.shiftKey ) {
-            this.offset.x += isWheelUp ? -20 : 20; 
-            updateOffset( this.offset ); /* debug */
-        } else {
-            this.offset.y += isWheelUp ? -20 : 20; 
-            updateOffset( this.offset ); /* debug */
-        }
+
+        // 縮放視角 => 滾動滑鼠 + 按著Ctrl
+        if ( e.ctrlKey ) { zoomToPoint( this, mouseScreenPos, isWheelUp ); updateZoom( this.zoom ); /* debug */ } 
+        
+        // 左右平移視角 => 滾動滑鼠 + 按著Shift
+        else if ( e.shiftKey ) { this.offset.x += isWheelUp ? -20 : 20; updateOffset( this.offset ); /* debug */ } 
+        
+        // 上下平移視角 => 只滾動滑鼠
+        else { this.offset.y += isWheelUp ? -20 : 20; updateOffset( this.offset ); /* debug */ }
     }
 
     private canPan( mouseButton: MouseButton ) {

@@ -2,7 +2,7 @@ import type { Vector2 } from '../types';
 import type { ViewportManager } from './ViewportManager';
 import { screenToWorld } from '../Utils.js';
 
-export function zoomToPoint( viewport: ViewportManager, pointOnScreen: Vector2, isWheelUp: boolean) {
+export function zoomToPoint( viewport: ViewportManager, pointOnScreen: Vector2, isWheelUp: boolean ) {
     // 紀錄這個「螢幕座標」在縮放之前的「世界座標」
     const worldPosBefore = screenToWorld( viewport, pointOnScreen );
     

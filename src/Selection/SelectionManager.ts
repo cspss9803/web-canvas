@@ -11,8 +11,8 @@ export class SelectionManager {
     
     constructor( core: CanvasCore ) {
         this.core = core;
-        core.events.on('mouseDown', (e: CanvasMouseEvent) => { this.startSelect(e) });
-        core.events.on('mouseMove', (e: CanvasMouseEvent) => { this.selecting(e) });
+        core.events.on('mouseDown', (e) => { this.startSelect(e) });
+        core.events.on('mouseMove', (e) => { this.selecting(e) });
         core.events.on('mouseUp', () => { this.stopSelect() });
     }
 
