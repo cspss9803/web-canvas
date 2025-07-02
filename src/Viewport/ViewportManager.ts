@@ -43,25 +43,19 @@ export class ViewportManager {
         if ( e.ctrlKey ) { zoomToPoint( this, mouseScreenPos, isWheelUp ); } 
         
         // 左右平移視角 => 滾動滑鼠 + 按著Shift
-        else if ( e.shiftKey ) { this.offset.x += isWheelUp ? -20 : 20; } 
+        else if ( e.shiftKey ) { this.offset.x += isWheelUp ? 5 : -5; } 
         
         // 上下平移視角 => 只滾動滑鼠
-        else { this.offset.y += isWheelUp ? -20 : 20; }
+        else { this.offset.y += isWheelUp ? 5 : -5; }
     }
 
     private canPan( mouseButton: MouseButton ) {
 
         // 互動模式在 "Moving" 時，按下左鍵 => 允許移動視角
-        if( 
-            this.core.interaction.mode === InteractionMode.Pan && 
-            mouseButton === MouseButton.Left 
-        ) { return true; } 
+        if( this.core.interaction.mode === InteractionMode.Pan && mouseButton === MouseButton.Left ) { return true; } 
         
         // 按著滑鼠中鍵，並且沒有在進行框選 => 允許移動視角
-        else if( 
-            mouseButton === MouseButton.Middle && 
-            !this.core.selection.isSelecting 
-        ) { return true; } 
+        else if( mouseButton === MouseButton.Middle && !this.core.selection.isSelecting ) { return true; } 
         
         // 其他情況 => 不允許移動視角
         else { return false; }
