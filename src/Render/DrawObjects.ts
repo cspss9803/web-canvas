@@ -5,6 +5,8 @@ export function drawObjects( context: CanvasRenderingContext2D, objects: UIObjec
     context.save();
     context.translate( offset.x, offset.y );
     context.scale( zoom, zoom );
-    for( const object of objects ) { object.render( context, offset, zoom ); }
+    for( const object of objects ) { 
+        object.render( context, offset, zoom ); 
+    }
     context.restore();
 }

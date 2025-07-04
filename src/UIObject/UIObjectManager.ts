@@ -1,6 +1,9 @@
 import type { CanvasCore } from '../CanvasCore';
 import type { UIObject } from './UIObject';
+import type { BoundingEdges } from '../types';
+import { selectObjects } from './selectObjects.js';
 import { Rect } from './Shape/Rect.js';
+
 
 export class UIObjectManager {
     
@@ -30,5 +33,9 @@ export class UIObjectManager {
             this.selected = [];
             this.core.renderer.render();
         }
+    }
+
+    public updateSelected( selectionBox: BoundingEdges ) {
+        this.selected = selectObjects( this.objects, selectionBox );
     }
 }

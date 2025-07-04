@@ -1,4 +1,4 @@
-import type { Vector2 } from '../types';
+import type { Vector2, BoundingEdges } from '../types';
 import { generateUUID } from '../Utils.js';
 
 export abstract class UIObject {
@@ -15,7 +15,9 @@ export abstract class UIObject {
 
     abstract render(ctx: CanvasRenderingContext2D, offset: Vector2, zoom: number): void;
 
-    abstract containsPoint( worldPos: Vector2 ): boolean;
+    abstract isHit( worldPos: Vector2 ): boolean;
+
+    abstract getBoundingEdges(): BoundingEdges
 
     move( delta: Vector2 ): void {
         this.position.x += delta.x;

@@ -3,6 +3,7 @@ import { drawGrid } from './DrawGrid.js';
 import { clearCanvas } from './Clear.js';
 import { drawSelectionArea } from './DrawSelectionArea.js';
 import { drawObjects } from './DrawObjects.js';
+import { drawBoundingBox } from './DrawBoundingBox.js';
 
 export class RenderManager {
 
@@ -26,11 +27,13 @@ export class RenderManager {
             const { canvas, context } = this;
             const { offset, zoom } = this.core.viewport;
             const { isSelecting, start, end } = this.core.selection;
-            const { objects } = this.core.objectManager;
+            const { objects, selected } = this.core.objectManager;
 
             clearCanvas( canvas );
             drawGrid( canvas, offset, zoom );
-            drawObjects( context, objects, offset, zoom );
+
+            if( objects.length ) { drawObjects( context, objects, offset, zoom ); }
+            if( selected.length ) { drawBoundingBox( context, selected, offset, zoom ); }
             if( isSelecting ) { drawSelectionArea( context, start, end, offset, zoom ); }
 
             this.isRenderedThisFrame = false;

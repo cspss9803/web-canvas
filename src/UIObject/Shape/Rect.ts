@@ -1,5 +1,4 @@
-import type { Vector2, TextStyle, BorderStyle } from '../../types';
-import { UIObject } from '../UIObject';
+import type { BoundingEdges, Vector2 } from '../../types';
 import { Shape } from './Shape.js';
 
 interface RectSize {
@@ -12,10 +11,8 @@ export class Rect extends Shape {
     size: RectSize
 
     constructor( position: Vector2, size: RectSize ) {
-
         super( position );
-
-        this.size = size
+        this.size = size;
     }
 
     renderShape(ctx: CanvasRenderingContext2D) {
@@ -24,10 +21,19 @@ export class Rect extends Shape {
         ctx.fillRect( x, y, width, height );
     }
 
-    containsPoint( worldPos: Vector2 ) {
+    isHit( worldPos: Vector2 ) {
         const { x: px, y: py } = this.position;
         const { x, y } = worldPos;
         const { width, height } = this.size;
         return x >= px && x <= px + width && y >= py && y <= py + height;
+    }
+
+    getBoundingEdges(): BoundingEdges {
+        return {
+            minX: this.position.x,
+            maxX: this.position.x + this.size.width,
+            minY: this.position.y,
+            maxY: this.position.y + this.size.height
+        };
     }
 }
