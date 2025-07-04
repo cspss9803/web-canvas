@@ -1,5 +1,6 @@
 import type { CanvasCore } from '../CanvasCore';
 import type { UIObject } from './UIObject';
+import { Rect } from './Shape/Rect.js';
 
 export class UIObjectManager {
     
@@ -10,6 +11,9 @@ export class UIObjectManager {
     constructor( core: CanvasCore ) {
         this.core = core;
         core.events.on('keyDown', this.deleteSelected);
+
+        this.add( new Rect( { x:200, y:200 }, { width: 50, height:50 } ) );
+        this.add( new Rect( { x:500, y:500 }, { width: 50, height:50 } ) );
     }
 
     public add( object: UIObject ) { this.objects.push( object ); }

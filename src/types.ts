@@ -18,7 +18,6 @@ export interface CanvasMouseEvent extends MouseEvent {
 }
 
 export interface TextStyle {
-    content: string;
     color: string;
     bold: boolean;
     italic: boolean;

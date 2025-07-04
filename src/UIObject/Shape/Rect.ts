@@ -2,22 +2,32 @@ import type { Vector2, TextStyle, BorderStyle } from '../../types';
 import { UIObject } from '../UIObject';
 import { Shape } from './Shape.js';
 
-export class Rect extends Shape {
-    width: number;
-    height: number;
+interface RectSize {
+    width: number,
+    height: number
+}
 
-    constructor( position: Vector2, width: number, height:number, fillColor: string, borderStyle: BorderStyle, textStyle: TextStyle, parent: UIObject | null ) {
-        super(  position, fillColor, borderStyle, textStyle, parent );
-        this.width = width;
-        this.height = height;
+export class Rect extends Shape {
+
+    size: RectSize
+
+    constructor( position: Vector2, size: RectSize ) {
+
+        super( position );
+
+        this.size = size
     }
 
     renderShape(ctx: CanvasRenderingContext2D) {
         const { x, y } = this.position;
-        ctx.fillRect(x, y, this.width, this.height);
+        const { width, height } = this.size;
+        ctx.fillRect( x, y, width, height );
     }
 
-    containsPoint(worldPos: Vector2, offset: Vector2): boolean {
-        return false;
+    containsPoint( worldPos: Vector2 ) {
+        const { x: px, y: py } = this.position;
+        const { x, y } = worldPos;
+        const { width, height } = this.size;
+        return x >= px && x <= px + width && y >= py && y <= py + height;
     }
 }

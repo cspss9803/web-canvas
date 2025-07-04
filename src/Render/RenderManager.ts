@@ -2,6 +2,7 @@ import type { CanvasCore } from '../CanvasCore';
 import { drawGrid } from './DrawGrid.js';
 import { clearCanvas } from './Clear.js';
 import { drawSelectionArea } from './DrawSelectionArea.js';
+import { drawObjects } from './DrawObjects.js';
 
 export class RenderManager {
 
@@ -29,6 +30,7 @@ export class RenderManager {
 
             clearCanvas( canvas );
             drawGrid( canvas, offset, zoom );
+            drawObjects( context, objects, offset, zoom );
             if( isSelecting ) { drawSelectionArea( context, start, end, offset, zoom ); }
 
             this.isRenderedThisFrame = false;
