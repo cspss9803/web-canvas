@@ -5,11 +5,11 @@ import { zoomToPoint } from './Zoom.js';
 
 export class ViewportManager {
 
-    core: CanvasCore;
-    offset: Vector2 = { x: 0, y: 0 };
-    cursorPos: Vector2 = { x: 0, y: 0 };
-    zoom: number = 1;
-    isPanning: boolean = false;
+    public core: CanvasCore;
+    public offset: Vector2 = { x: 0, y: 0 };
+    public zoom: number = 1;
+    public isPanning: boolean = false;
+    private cursorPos: Vector2 = { x: 0, y: 0 };
 
     constructor( core: CanvasCore ) {
         this.core = core;
@@ -19,23 +19,29 @@ export class ViewportManager {
         core.events.on('wheel', (e) => this.handleWheel(e));
     }
 
-    startPanning = ( e: CanvasMouseEvent ) => {
+    private startPanning = ( e: CanvasMouseEvent ) => {
         if( this.canPan( e.button ) ) {
             this.isPanning = true;
             this.cursorPos = e.screenPosition;
         }
     }
 
-    handlePan = ( e: CanvasMouseEvent ) => {
-        if ( !this.isPanning ) return;
-        this.offset.x += e.screenPosition.x - this.cursorPos.x;
-        this.offset.y += e.screenPosition.y - this.cursorPos.y;
-        this.cursorPos = e.screenPosition;
+    private handlePan = ( e: CanvasMouseEvent ) => {
+        if ( this.isPanning ) {
+            this.offset.x += e.screenPosition.x - this.cursorPos.x;
+            this.offset.y += e.screenPosition.y - this.cursorPos.y;
+            this.cursorPos = e.screenPosition;
+            this.core.renderer.render();
+        }
     }
 
-    stopPanning = () => { this.isPanning = false; }
+    private stopPanning = () => {
+        if ( this.isPanning ) {
+            this.isPanning = false;
+        }
+    }
 
-    handleWheel = ( e: WheelEvent ) => {
+    private handleWheel = ( e: WheelEvent ) => {
         const isWheelUp = e.deltaY < 0;
         const mouseScreenPos = { x: e.clientX, y: e.clientY };
 
@@ -47,6 +53,8 @@ export class ViewportManager {
         
         // 上下平移視角 => 只滾動滑鼠
         else { this.offset.y += isWheelUp ? 5 : -5; }
+
+        this.core.renderer.render();
     }
 
     private canPan( mouseButton: MouseButton ) {

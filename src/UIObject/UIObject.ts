@@ -1,7 +1,7 @@
 import type { Vector2 } from '../types';
 import { generateUUID } from '../Utils.js';
 
-abstract class UIObject {
+export abstract class UIObject {
     /** 唯一 ID（方便連線等操作） */
     readonly id: string;
 
@@ -18,12 +18,10 @@ abstract class UIObject {
     }
 
     /** 全局渲染入口，子類實作 */
-    abstract render(ctx: CanvasRenderingContext2D): void;
+    abstract render(ctx: CanvasRenderingContext2D, offset: Vector2, zoom: number): void;
 
     /** 全局碰撞／點擊檢測，子類可覆寫 */
-    containsPoint( worldPos: Vector2 ): boolean {
-        return false; // 預設不命中，子類自行實作
-    }
+    abstract containsPoint( worldPos: Vector2, offset: Vector2 ): boolean;
 
     /** 移動：同時更新子代 worldPos（相對於 parent 的偏移不變） */
     move( delta: Vector2 ): void {

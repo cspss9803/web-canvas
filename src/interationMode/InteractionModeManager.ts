@@ -5,9 +5,9 @@ import { switchToTemporaryMoveMode, exitTemporaryMoveMode } from './temporaryMov
 
 export class InteractionModeManager {
 
-    core: CanvasCore
-    mode: InteractionMode = InteractionMode.Select
-    prevMode: InteractionMode | null = null;
+    public core: CanvasCore
+    public mode: InteractionMode = InteractionMode.Select
+    public prevMode: InteractionMode | null = null;
 
     constructor( core: CanvasCore ) {
 
@@ -42,5 +42,5 @@ export class InteractionModeManager {
 
     }
 
-    initCursor() { updateCursor( this.core, false ); }
+    public initCursor() { updateCursor( this.core, false ); }
 }

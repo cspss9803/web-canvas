@@ -5,10 +5,10 @@ import { drawSelectionArea } from './DrawSelectionArea.js';
 
 export class RenderManager {
 
-    core: CanvasCore;
-    isRenderedThisFrame: boolean = false;
-    canvas: HTMLCanvasElement;
-    context: CanvasRenderingContext2D;
+    public core: CanvasCore;
+    public canvas: HTMLCanvasElement;
+    public context: CanvasRenderingContext2D;
+    private isRenderedThisFrame: boolean = false;
     
     constructor( core: CanvasCore, canvas: HTMLCanvasElement ) {
         this.core = core;
@@ -18,20 +18,14 @@ export class RenderManager {
         this.resizeCanvas();
     }
 
-    startListening() {
-        this.core.events.on('mouseDown', () => this.render() );
-        this.core.events.on('mouseMove', () => this.render() );
-        this.core.events.on('mouseUp', () => this.render() );
-        this.core.events.on('wheel', () => this.render() );
-    }
-
-    render() {
+    public render() {
         if ( this.isRenderedThisFrame ) return;
         this.isRenderedThisFrame = true;
         requestAnimationFrame(() => {
             const { canvas, context } = this;
             const { offset, zoom } = this.core.viewport;
             const { isSelecting, start, end } = this.core.selection;
+            const { objects } = this.core.objectManager;
 
             clearCanvas( canvas );
             drawGrid( canvas, offset, zoom );
@@ -41,7 +35,7 @@ export class RenderManager {
         });
     }
 
-    resizeCanvas() {
+    private resizeCanvas() {
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
         this.render();

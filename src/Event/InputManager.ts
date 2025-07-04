@@ -16,7 +16,10 @@ export class InputManager {
     }
 
     onMouseDown = ( e: MouseEvent ) => {
-        this.core.events.emit('mouseDown', this.getCanvasMouseEvent(e));
+        // 確定點到的是畫布才發出按下事件
+        if( e.composedPath()[0] === this.core.renderer.canvas ) {
+            this.core.events.emit('mouseDown', this.getCanvasMouseEvent(e));
+        }
     }
 
     onMouseMove = (e: MouseEvent) => {
