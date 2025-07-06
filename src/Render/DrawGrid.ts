@@ -29,7 +29,7 @@ interface GridSettings {
 }
 
 export function drawGrid( 
-    canvas: HTMLCanvasElement, 
+    context: CanvasRenderingContext2D , 
     offset: Vector2 = { x: 0, y: 0 },
     zoom: number = 1,
     gridSettings: GridSettings = {
@@ -41,8 +41,6 @@ export function drawGrid(
         thickLineInterval: 5
     } 
 ) {
-    
-    const context = canvas.getContext('2d');
 
     const { 
         thinLineColor, 
@@ -52,12 +50,13 @@ export function drawGrid(
         thickLineInterval 
     } = gridSettings;
     const gridSize = Math.round( gridSettings.gridSize * zoom * 100 ) / 100;
+    const { width, height } = context.canvas
 
     function drawLines( direction: Direction ) {
         const isVertical = direction === Direction.Vertical;
 
         // 根據當前繪製的方向選擇寬或高
-        const max = isVertical ? canvas.width : canvas.height;
+        const max = isVertical ? width : height;
 
         // 根據當前繪製的方向選擇 x 或 y
         const offsetValue = isVertical ? offset.x : offset.y;
@@ -79,10 +78,10 @@ export function drawGrid(
 
             if ( isVertical ) {
                 context.moveTo( pos, 0 );
-                context.lineTo( pos, canvas.height );
+                context.lineTo( pos, height );
             } else {
                 context.moveTo( 0, pos );
-                context.lineTo( canvas.width, pos );
+                context.lineTo( width, pos );
             }
             context.stroke();
         }

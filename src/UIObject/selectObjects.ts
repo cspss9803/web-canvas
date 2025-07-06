@@ -10,8 +10,25 @@ function isIntersecting ( objectEdges: BoundingEdges, selectionEdges: BoundingEd
     );
 }
 
-export function selectObjects( objects: UIObject[], selectionBox: BoundingEdges ) {
-    return objects.filter( object =>
-        isIntersecting( object.getBoundingEdges(), selectionBox )
-    );
+export function selectObjects( objects: UIObject[], selectedSnapshot: Set<UIObject>, selectionEdges: BoundingEdges ) {
+    const newlySelected: UIObject[] = [];
+    for (const object of objects) {
+        const objectEdges = object.getBoundingEdges();
+        const isInBox = isIntersecting( objectEdges, selectionEdges );
+
+        const wasSelected = selectedSnapshot.has(object);
+
+        if (isInBox && wasSelected) {
+            // 框選前已被選取 + 現在被框選到 => 要取消
+            // 不加入 newlySelected
+        } else if (isInBox && !wasSelected) {
+            // 框選前沒被選取 + 現在被框選到 => 要選取
+            newlySelected.push(object);
+        } else if (!isInBox && wasSelected) {
+            // 框選前已被選取 + 現在沒被框選 => 恢復選取
+            newlySelected.push(object);
+        }
+        // 框選前沒被選取 + 現在沒被框選 => 保持未選
+    }
+    return newlySelected;
 }

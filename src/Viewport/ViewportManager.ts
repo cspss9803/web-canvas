@@ -49,10 +49,10 @@ export class ViewportManager {
         if ( e.ctrlKey ) { zoomToPoint( this, mouseScreenPos, isWheelUp ); } 
         
         // 左右平移視角 => 滾動滑鼠 + 按著Shift
-        else if ( e.shiftKey ) { this.offset.x += isWheelUp ? 5 : -5; } 
+        else if ( e.shiftKey ) { this.offset.x += isWheelUp ? 20 : -20; } 
         
         // 上下平移視角 => 只滾動滑鼠
-        else { this.offset.y += isWheelUp ? 5 : -5; }
+        else { this.offset.y += isWheelUp ? 20 : -20; }
 
         this.core.renderer.render();
     }

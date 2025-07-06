@@ -1,7 +1,9 @@
 import type { CanvasCore } from '../CanvasCore';
 import type { Vector2, CanvasMouseEvent, BoundingEdges } from '../types';
 import { InteractionMode, MouseButton } from '../types.js';
+import { UIObject } from '../UIObject/UIObject';
 import { getHitObject } from './GetHitObject.js';
+import { getObjectsTotalBoundingEdges } from '../Utils.js';
 
 export class SelectionManager {
     
@@ -21,15 +23,25 @@ export class SelectionManager {
         const isSelectMode = this.core.interaction.mode === InteractionMode.Select;
         const useLeftMouseButton = e.button === MouseButton.Left;
         if( isSelectMode && useLeftMouseButton ) {
-            const startWorldPos = e.worldPosition;
+
             const objectManager = this.core.objectManager;
-            const hitObject = getHitObject( startWorldPos, objectManager.objects );
-            if ( hitObject ) {
-                objectManager.selected.push( hitObject );
-            } else {
-                objectManager.selected = [];
-                this.start = startWorldPos;
+            const selectedObjects = objectManager.selectionGroup.children;
+            const hitObject = getHitObject( e.worldPosition, objectManager.objects );
+            const isPointInSelectionEdges = this.isPointInSelectionEdges( e.worldPosition );
+
+            if ( isPointInSelectionEdges ) {}
+            else if ( hitObject ) {
+                if( e.shiftKey ) { this.toggleSelection( hitObject ); }
+                else if( !selectedObjects.includes( hitObject ) ) { 
+                    selectedObjects.length = 0; 
+                    selectedObjects.push(hitObject); 
+                }
+            } 
+            else { 
+                this.start = e.worldPosition;
                 this.isSelecting = true;
+                if( !e.shiftKey ) { selectedObjects.length = 0; }
+                objectManager.updateSelectedSnapshot( true );
             }
             this.core.renderer.render();
         }
@@ -39,7 +51,7 @@ export class SelectionManager {
         if( this.isSelecting ) {
             this.end = e.worldPosition;
             const selectionEdges = this.getSelectionEdges();
-            this.core.objectManager.updateSelected( selectionEdges );
+            if( selectionEdges ) { this.core.objectManager.updateSelected( selectionEdges ); }
             this.core.renderer.render();
         };
     }
@@ -49,11 +61,12 @@ export class SelectionManager {
             if( this.start ) this.start = null;
             if( this.end ) this.end = null;
             this.isSelecting = false;
+            this.core.objectManager.updateSelectedSnapshot( false );
             this.core.renderer.render();
         }
     }
 
-    private getSelectionEdges(): BoundingEdges {
+    private getSelectionEdges(): BoundingEdges | null {
         if( this.start && this.end ) {
             return {
                 minX: Math.min( this.start.x, this.end.x ),
@@ -62,7 +75,25 @@ export class SelectionManager {
                 maxY: Math.max( this.start.y, this.end.y ),
             };
         } 
-        else { return { minX: 0, maxX: 0, minY: 0, maxY: 0 }; }
+        else { return null; }
+    }
+
+    private isPointInSelectionEdges( point: Vector2) {
+        const selectionEdges = getObjectsTotalBoundingEdges( this.core.objectManager.selectionGroup.children );
+        return !(
+            point.x < selectionEdges.minX ||
+            point.x > selectionEdges.maxX ||
+            point.y < selectionEdges.minY ||
+            point.y > selectionEdges.maxY
+        );
+    }
+
+    private toggleSelection( object: UIObject ) {
+        const selectedObjects = this.core.objectManager.selectionGroup.children;
+        // const selected = this.core.objectManager.selected;
+        const index = selectedObjects.indexOf( object );
+        if ( index !== -1 ) { selectedObjects.splice( index, 1 ); } 
+        else { selectedObjects.push( object ); }
     }
     
 }
