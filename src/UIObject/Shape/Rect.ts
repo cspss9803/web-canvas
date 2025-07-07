@@ -30,9 +30,9 @@ export class Rect extends Shape {
 
     getBoundingEdges(): BoundingEdges {
         return {
-            minX: this.position.x,
+            minX: this.position.x ,
             maxX: this.position.x + this.size.width,
-            minY: this.position.y,
+            minY: this.position.y ,
             maxY: this.position.y + this.size.height
         };
     }

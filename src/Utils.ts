@@ -17,9 +17,9 @@ export function generateUUID(): string { // 參考 RFC4122 v4 格式
     });
 }
 
-export function getObjectsTotalBoundingEdges( objects: UIObject[] ): BoundingEdges {
+export function getObjectsTotalBoundingEdges( objects: Set<UIObject> ): BoundingEdges {
 
-    if ( objects.length === 0 ) { return { minX: 0, maxX: 0, minY: 0, maxY: 0 }; }
+    if ( objects.size === 0 ) { return { minX: 0, maxX: 0, minY: 0, maxY: 0 }; }
 
     let minX = Infinity;
     let minY = Infinity;
@@ -35,4 +35,13 @@ export function getObjectsTotalBoundingEdges( objects: UIObject[] ): BoundingEdg
     }
 
     return { minX, minY, maxX, maxY };
+}
+
+export function isPointInEdges( worldPosition: Vector2, edges: BoundingEdges ){
+    return !(
+        worldPosition.x < edges.minX ||
+        worldPosition.x > edges.maxX ||
+        worldPosition.y < edges.minY ||
+        worldPosition.y > edges.maxY
+    )
 }

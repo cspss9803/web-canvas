@@ -10,7 +10,7 @@ export function drawBoundingEdges(
     zoom: number
 ) {
     // 如果沒有選取任何物件，則不繪製
-    if ( selectionGroup.children.length === 0 ) return;
+    if ( selectionGroup.children.size === 0 ) return;
 
     const totalEdges = selectionGroup.getBoundingEdges();
 

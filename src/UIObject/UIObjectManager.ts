@@ -1,17 +1,12 @@
 import type { CanvasCore } from '../CanvasCore';
 import type { UIObject } from './UIObject';
-import type { BoundingEdges } from '../types';
-import { selectObjects } from './selectObjects.js';
 import { Rect } from './Shape/Rect.js';
-import { Group } from './Group/Group.js';
 
 
 export class UIObjectManager {
     
     public core: CanvasCore;
     public objects: UIObject[] = [];
-    public selectedSnapshot: Set<UIObject> = new Set();
-    public selectionGroup: Group = new Group();
 
     constructor( core: CanvasCore ) {
         this.core = core;
@@ -22,26 +17,17 @@ export class UIObjectManager {
 
     public add( object: UIObject ) { this.objects.push( object ); }
 
-    public removeObjects( objects: UIObject[] ) {
-        if (objects.length === 0) return;
-        const selectedIds = new Set(objects.map(o => o.id));
+    public removeObjects( objects: Set<UIObject> ) {
+        if (objects.size === 0) return;
+        const selectedIds = new Set(Array.from(objects, o => o.id));
         this.objects = this.objects.filter(o => !selectedIds.has(o.id));
-        this.selectionGroup.children = [];
+        this.core.selection.selectionGroup.children.clear();
     }
 
     private deleteSelected = ( e:KeyboardEvent ) => {
         if( ['Delete', 'Backspace'].includes(e.code) ) {
-            this.removeObjects( this.selectionGroup.children );
+            this.removeObjects( this.core.selection.selectionGroup.children );
             this.core.renderer.render();
         }
-    }
-
-    public updateSelected( selectionEdges: BoundingEdges ) {
-        this.selectionGroup.children = selectObjects( this.objects, this.selectedSnapshot, selectionEdges );
-    }
-
-    public updateSelectedSnapshot( isRecord: boolean ) {
-        if( isRecord ) { this.selectedSnapshot = new Set(this.selectionGroup.children); }
-        else { this.selectedSnapshot.clear(); }
     }
 }

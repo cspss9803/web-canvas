@@ -26,8 +26,8 @@ export class RenderManager {
         requestAnimationFrame(() => {
             const { canvas, context } = this;
             const { offset, zoom } = this.core.viewport;
-            const { start, end } = this.core.selection;
-            const { objects, selectionGroup } = this.core.objectManager;
+            const { start, end, selectionGroup } = this.core.selection;
+            const { objects } = this.core.objectManager;
 
             clearCanvas( canvas );
             drawGrid( context, offset, zoom );

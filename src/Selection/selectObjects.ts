@@ -1,4 +1,4 @@
-import type { UIObject } from './UIObject';
+import type { UIObject } from '../UIObject/UIObject';
 import type { BoundingEdges } from '../types';
 
 function isIntersecting ( objectEdges: BoundingEdges, selectionEdges: BoundingEdges ): boolean {
