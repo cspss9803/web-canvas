@@ -8,11 +8,13 @@ export function drawSelectionArea(
     zoom: number
 ) {
     if( !start || !end ) return;
+
+    start = { x: start.x * zoom, y: start.y * zoom }
+    end = { x: end.x * zoom, y: end.y * zoom }
     context.save();
-    context.translate( offset.x, offset.y );
-    context.scale( zoom, zoom );
-    context.strokeStyle = 'rgb(0, 119, 255)';
     context.lineWidth = 1.5;
+    context.translate( offset.x, offset.y );
+    context.strokeStyle = 'rgb(0, 119, 255)';
     context.fillStyle = 'rgba(0, 119, 255, 0.25)';
     const x = Math.min( start.x,  end.x );
     const y = Math.min( start.y,  end.y );
