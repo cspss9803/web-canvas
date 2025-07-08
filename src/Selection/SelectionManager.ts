@@ -1,7 +1,6 @@
 import type { CanvasCore } from '../CanvasCore';
 import type { Vector2, CanvasMouseEvent, BoundingEdges } from '../types';
 import { InteractionMode, MouseButton } from '../types.js';
-import { UIObject } from '../UIObject/UIObject';
 import { getHitObject } from './GetHitObject.js';
 import { SelectionGroup } from '../UIObject/Group/SelectionGroup.js';
 
@@ -11,6 +10,7 @@ export class SelectionManager {
     public start: Vector2 | null = null;
     public end: Vector2 | null = null;
     public isSelecting: boolean = false;
+    public isMoving: boolean = false;
     public selectionGroup: SelectionGroup = new SelectionGroup();
     
     constructor( core: CanvasCore ) {
@@ -33,16 +33,24 @@ export class SelectionManager {
         if ( hitObject ) {
             if( e.shiftKey ) { selectionGroup.toggle( hitObject ); }
             else if( !selectionGroup.has( hitObject ) ) { 
-                selectionGroup.clear()
+                selectionGroup.clear();
                 selectionGroup.add( hitObject ); 
-            }
+            } 
+            this.startMove( e.worldPosition );
             this.core.renderer.render();
-        } else if( !isHitSelectionGroup ) { 
+        } 
+        else if( isHitSelectionGroup ) { this.startMove( e.worldPosition ); }
+        else { 
             if( !e.shiftKey ) { selectionGroup.clear(); }
-            this.start = e.worldPosition;
             this.isSelecting = true;
+            this.start = e.worldPosition;
             selectionGroup.recordSnapshot();
         }
+    }
+
+    private startMove( startPosition: Vector2 ) {
+        this.isMoving = true;
+        this.selectionGroup.previousMousePos = startPosition;
     }
 
     private selecting = ( e: CanvasMouseEvent ) => {
@@ -54,7 +62,10 @@ export class SelectionManager {
                 this.selectionGroup.updateSelect( objects, selectionEdges );
             }
             this.core.renderer.render();
-        };
+        } else if( this.isMoving ) {
+            this.selectionGroup.move( e.worldPosition );
+            this.core.renderer.render();
+        }
     }
 
     private stopSelect = () => {
@@ -63,6 +74,10 @@ export class SelectionManager {
             this.end = null;
             this.isSelecting = false;
             this.core.renderer.render();
+        }
+        else if ( this.isMoving ) {
+            this.isMoving = false;
+            this.selectionGroup.previousMousePos = null;
         }
     }
 

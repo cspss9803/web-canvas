@@ -1,14 +1,14 @@
 import { Group } from './Group.js';
 import type { UIObject } from '../UIObject.js';
 import type { Vector2, BoundingEdges } from '../../types';
-import { selectObjects } from '../../Selection/selectObjects.js';
 import { drawRoundedBox } from '../../Render/DrawRoundedBox.js';
 
 export class SelectionGroup extends Group {
 
     snapshot: Set<UIObject> = new Set();
+    previousMousePos: Vector2 | null = null;
 
-    constructor(position: Vector2 = { x: 0, y: 0 }) { super(position); }
+    constructor( position: Vector2 = { x: 0, y: 0 } ) { super(position); }
 
     toggle( object: UIObject ) {
         if ( this.children.has(object) ) { this.children.delete(object); } 
@@ -22,7 +22,20 @@ export class SelectionGroup extends Group {
     recordSnapshot() { this.snapshot = new Set( this.children ); }
 
     updateSelect( objects: UIObject[], selectionEdges: BoundingEdges ) {
-        this.children = selectObjects( objects, this.snapshot, selectionEdges );
+        const newlySelected: Set<UIObject> = new Set();
+        for (const object of objects) {
+            const objectEdges = object.getBoundingEdges();
+            const isInBox = !(
+                objectEdges.maxX < selectionEdges.minX ||
+                objectEdges.minX > selectionEdges.maxX ||
+                objectEdges.maxY < selectionEdges.minY ||
+                objectEdges.minY > selectionEdges.maxY
+            );
+            const wasSelected = this.snapshot.has( object );
+            if ( isInBox && !wasSelected ) { newlySelected.add(object) } // 框選前沒被選取 + 現在被框選到 => 要選取
+            else if ( !isInBox && wasSelected ) { newlySelected.add(object) } // 框選前已被選取 + 現在沒被框選 => 恢復選取
+        }
+        this.children = new Set(newlySelected);
     }
 
     render(ctx: CanvasRenderingContext2D, offset: Vector2, zoom: number): void {
@@ -32,5 +45,19 @@ export class SelectionGroup extends Group {
             drawRoundedBox( ctx, boxEdges, offset, { color: 'rgb(0, 183, 255)' } );
         }
         drawRoundedBox( ctx, this.getBoundingEdges( zoom ), offset );
+    }
+
+    move( currentMousePos: Vector2 ) {
+        if( this.previousMousePos ) {
+            const delta = {
+                x: currentMousePos.x - this.previousMousePos.x,
+                y: currentMousePos.y - this.previousMousePos.y
+            };
+
+            for( const object of this.children ) { 
+                object.move( delta ); 
+            }
+            this.previousMousePos = currentMousePos;
+        }
     }
 }

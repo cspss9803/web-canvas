@@ -28,7 +28,7 @@ export class Rect extends Shape {
         return x >= px && x <= px + width && y >= py && y <= py + height;
     }
 
-    getBoundingEdges( zoom: number ): BoundingEdges {
+    getBoundingEdges( zoom: number = 1 ): BoundingEdges {
         return {
             minX: this.position.x * zoom ,
             maxX: (this.position.x + this.size.width) * zoom,

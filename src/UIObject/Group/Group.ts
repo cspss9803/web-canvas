@@ -40,4 +40,10 @@ export class Group extends UIObject {
         }
         return { minX, minY, maxX, maxY };
     }
+
+    move( delta: Vector2 ): void {
+        for( const object of this.children ) {
+            object.move( delta );
+        }
+    }
 }
