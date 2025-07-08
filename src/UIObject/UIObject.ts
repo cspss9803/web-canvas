@@ -17,7 +17,7 @@ export abstract class UIObject {
 
     abstract isHit( worldPos: Vector2 ): boolean;
 
-    abstract getBoundingEdges(): BoundingEdges
+    abstract getBoundingEdges( zoom: number ): BoundingEdges
 
     move( delta: Vector2 ): void {
         this.position.x += delta.x;

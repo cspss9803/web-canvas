@@ -3,7 +3,6 @@ import { drawGrid } from './DrawGrid.js';
 import { clearCanvas } from './Clear.js';
 import { drawSelectionArea } from './DrawSelectionArea.js';
 import { drawObjects } from './DrawObjects.js';
-import { drawBoundingEdges } from './DrawBoundingEdges.js';
 
 export class RenderManager {
 
@@ -28,11 +27,10 @@ export class RenderManager {
             const { offset, zoom } = this.core.viewport;
             const { start, end, selectionGroup } = this.core.selection;
             const { objects } = this.core.objectManager;
-
             clearCanvas( canvas );
             drawGrid( context, offset, zoom );
             drawObjects( context, objects, offset, zoom );
-            drawBoundingEdges( context, selectionGroup, offset, zoom );
+            selectionGroup.render( context, offset, zoom );
             drawSelectionArea( context, start, end, offset, zoom );
             this.isRenderedThisFrame = false;
         });

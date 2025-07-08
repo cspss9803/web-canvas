@@ -1,20 +1,20 @@
 import type { Vector2, BoundingEdges, Color } from '../types.js';
 
 interface BoundingBoxStyle {
-    thickness: number;
-    radius: number;
-    color: Color;
+    thickness?: number;
+    radius?: number;
+    color?: Color;
 }
 
 export function drawRoundedBox(
     ctx: CanvasRenderingContext2D,
     boxEdges: BoundingEdges,
     offset: Vector2,
-    style: BoundingBoxStyle
+    style?: BoundingBoxStyle
 ) {
-    const thickness = style.thickness;
-    const radius = style.radius;
-    const color = style.color;
+    const thickness = style?.thickness || 3;
+    const radius = style?.radius || 3;
+    const color = style?.color || 'rgb(0, 85, 255)';
     ctx.save();
     ctx.translate( offset.x, offset.y );
     ctx.strokeStyle = color;

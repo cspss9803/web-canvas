@@ -28,12 +28,12 @@ export class Rect extends Shape {
         return x >= px && x <= px + width && y >= py && y <= py + height;
     }
 
-    getBoundingEdges(): BoundingEdges {
+    getBoundingEdges( zoom: number ): BoundingEdges {
         return {
-            minX: this.position.x ,
-            maxX: this.position.x + this.size.width,
-            minY: this.position.y ,
-            maxY: this.position.y + this.size.height
+            minX: this.position.x * zoom ,
+            maxX: (this.position.x + this.size.width) * zoom,
+            minY: this.position.y * zoom,
+            maxY: (this.position.y + this.size.height) * zoom
         };
     }
 }
