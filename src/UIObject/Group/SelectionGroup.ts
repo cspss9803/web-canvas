@@ -6,7 +6,7 @@ import { drawRoundedBox } from '../../Render/DrawRoundedBox.js';
 export class SelectionGroup extends Group {
 
     snapshot: Set<UIObject> = new Set();
-    previousMousePos: Vector2 | null = null;
+    startMovePos: Vector2 = { x: 0, y: 0 };
 
     constructor( position: Vector2 = { x: 0, y: 0 } ) { super(position); }
 
@@ -47,17 +47,18 @@ export class SelectionGroup extends Group {
         drawRoundedBox( ctx, this.getBoundingEdges( zoom ), offset );
     }
 
-    move( currentMousePos: Vector2 ) {
-        if( this.previousMousePos ) {
-            const delta = {
-                x: currentMousePos.x - this.previousMousePos.x,
-                y: currentMousePos.y - this.previousMousePos.y
-            };
+    startMoveSelectedOjects( startMovePos: Vector2 ) {
+        this.startMovePos = startMovePos;
+        this.startMove();
+    }
 
-            for( const object of this.children ) { 
-                object.move( delta ); 
-            }
-            this.previousMousePos = currentMousePos;
+    move( currentMousePos: Vector2, useSnap: boolean ) {
+        const offset = {
+            x: this.startMovePos.x - currentMousePos.x,
+            y: this.startMovePos.y - currentMousePos.y,
+        }
+        for( const object of this.children ) { 
+            object.move( offset, useSnap ); 
         }
     }
 }

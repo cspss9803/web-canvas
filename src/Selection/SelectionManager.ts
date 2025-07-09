@@ -50,7 +50,7 @@ export class SelectionManager {
 
     private startMove( startPosition: Vector2 ) {
         this.isMoving = true;
-        this.selectionGroup.previousMousePos = startPosition;
+        this.selectionGroup.startMoveSelectedOjects( startPosition );
     }
 
     private selecting = ( e: CanvasMouseEvent ) => {
@@ -63,7 +63,7 @@ export class SelectionManager {
             }
             this.core.renderer.render();
         } else if( this.isMoving ) {
-            this.selectionGroup.move( e.worldPosition );
+            this.selectionGroup.move( e.worldPosition, true );
             this.core.renderer.render();
         }
     }
@@ -77,7 +77,6 @@ export class SelectionManager {
         }
         else if ( this.isMoving ) {
             this.isMoving = false;
-            this.selectionGroup.previousMousePos = null;
         }
     }
 

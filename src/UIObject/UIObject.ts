@@ -4,12 +4,14 @@ import { generateUUID } from '../Utils.js';
 export abstract class UIObject {
 
     readonly id: string;
+    posBeforeMove: Vector2;
     position: Vector2;
     parent: UIObject | null;
 
     constructor(position: Vector2, parent: UIObject | null = null) {
         this.id = generateUUID();
         this.position = position;
+        this.posBeforeMove = position;
         this.parent = parent;
     }
 
@@ -19,9 +21,23 @@ export abstract class UIObject {
 
     abstract getBoundingEdges( zoom?: number ): BoundingEdges
 
-    move( delta: Vector2 ): void {
-        this.position.x += delta.x;
-        this.position.y += delta.y;
+    startMove() {
+        this.posBeforeMove = {
+            x: this.position.x,
+            y: this.position.y,
+        };
+    }
+
+    move( offset: Vector2, useSnap: boolean ): void {
+        const newPos = {
+            x: this.posBeforeMove.x - offset.x,
+            y: this.posBeforeMove.y - offset.y
+        };
+        const newPosWithSnap = {
+            x: Math.round(newPos.x / 25) * 25,
+            y: Math.round(newPos.y / 25) * 25
+        }
+        this.position = useSnap ? newPosWithSnap : newPos;
     }
 
 }

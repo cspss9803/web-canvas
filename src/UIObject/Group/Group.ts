@@ -41,9 +41,15 @@ export class Group extends UIObject {
         return { minX, minY, maxX, maxY };
     }
 
-    move( delta: Vector2 ): void {
+    startMove() {
         for( const object of this.children ) {
-            object.move( delta );
+            object.startMove();
+        }
+    }
+
+    move( delta: Vector2, useSnap: boolean ): void {
+        for( const object of this.children ) {
+            object.move( delta, useSnap );
         }
     }
 }
